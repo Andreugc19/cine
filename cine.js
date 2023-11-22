@@ -1,4 +1,4 @@
-// Capturar elementos del DOM
+// Captuar elementos del DOM
 const contenidor = document.querySelector('.contenidor');
 const seients = document.querySelectorAll('.fila .seient:not(.ocupat)');
 const contador = document.getElementById('contador');
@@ -8,71 +8,71 @@ const peliculaSelect = document.getElementById('pelicula');
 // Precio de la pelicula seleccionada.
 let preuDelTicket = +peliculaSelect.value;
 
-// Llenamos la interficie de usuario.
+// Llenamos la interfície de usuario.
 ompleUI();
 
 /* FUNCIONES */
 function actualitzaSeleccioSeients() {
-    const seientsSeleccionats = 
+  const seientsSeleccionats =
         document.querySelectorAll('.fila .seient.seleccionat');
         
-        // const seientsIndex = 
-        //     [...seientsSeleccionats].map(function(seient) {
-        //         return [...seients].indexOf(seient);
-        //     });
+        // const seientsIndex =
+        //   [...seientsSeleccionats].map(function(seient) {
+        //     return [...seients].indexOf(seient);
+        //   });
 
-    const seientsIndex = 
-        [...seientsSeleccionats].map((seient) => [...seients].indexOf(seient));
-        
-    localStorage.setItem('seientsSeleccionats', JSON.stringify(seientsIndex));
+  const seientsIndex =
+      [...seientsSeleccionats].map((seient) => [...seients].indexOf(seient));
 
-    const contadorSeientsSeleccionats = seientsSeleccionats.length;
-    contador.innerText = contadorSeientsSeleccionats;
+  localStorage.setItem('seientsSeleccionats', JSON.stringify(seientsIndex));
 
-    total.innerText = contadorSeientsSeleccionats * preuDelTicket;
+  const contadorSeientsSeleccionats = seientsSeleccionats.length;
+  contador.innerText = contadorSeientsSeleccionats;
+
+  total.innerText = contadorSeientsSeleccionats * preuDelTicket;
 
 }
 
 function ompleUI() {
-    const seientsSeleccionats = JSON.parse(localStorage.getItem("seientsSeleccionats"));
+  const seientsSeleccionats = JSON.parse(localStorage.getItem('seientsSeleccionats'));
+  
+  if(seientsSeleccionats !== null && seientsSeleccionats.length > 0) {
+    seients.forEach((seient, index) => {
+      if(seientsSeleccionats.indexOf(index) > -1) {
+        seient.classList.add('seleccionat');
+      }
+    });
+  }
 
-    if(seientsSeleccionats !== null && seientsSeleccionats.lenght > 0) {
-        seients.forEach((seient, index) => {
-            if(seientsSeleccionats.indexOf(index) > -1) {
-                seient.classList.add('seleccionat');
-            }
-        });
-    }
+  const indexPeliculaSeleccionada = localStorage.getItem('indexPeliculaSeleccionada');
 
-    const indexPeliculaSeleccionada = localStorage.getItem('indePeliculaSeleccionada');
+  if(indexPeliculaSeleccionada !== null) {
+    peliculaSelect.selectedIndex = indexPeliculaSeleccionada;
+  }
 
-    if(indexPeliculaSeleccionada !== null) {
-        peliculaSelect.selectedIndex = indexPeliculaSeleccionada;
-    }
+  const preuPeliculaSeleccionada = localStorage.getItem('preuPeliculaSeleccionada');
 
-    const preuPeliculaSeleccionada = localStorage.getItem('preuPeliculaSeleccionada');
-
-    if(preuPeliculaSeleccionada !== null) {
-        preuDelTicket = +preuPeliculaSeleccionada;
-    }
+  if(preuPeliculaSeleccionada !== null) {
+    preuDelTicket = +preuPeliculaSeleccionada;
+  }
 }
 
 /* EVENTOS */
 contenidor.addEventListener('click', (e) => {
-    if(e.target.classList.contains('seient')
-        && !e.target.classList.contains('ocupat')) {
-        e.target.classList.toggle('seleccionat');
-        actualitzaSeleccioSeients();
-    }
+  if(e.target.classList.contains('seient')
+      && !e.target.classList.contains('ocupat')) {
+    e.target.classList.toggle('seleccionat');
+    actualitzaSeleccioSeients();
+  }
 });
 
 peliculaSelect.addEventListener('change', (e) => {
-    preuDelTicket = +e.target.value;
+  preuDelTicket = +e.target.value;
 
-    localStorage.setItem('indexPeliculaSeleccionada', e.target.selectedIndex);
-    localStorage.setItem('preuPeliculaSeleccionada', e.target.value);
+  localStorage.setItem('indexPeliculaSeleccionada', e.target.selectedIndex);
+  localStorage.setItem('preuPeliculaSeleccionada', e.target.value);
 
-    actualitzaSeleccioSeients();
+  actualitzaSeleccioSeients();
 });
 
 actualitzaSeleccioSeients();
